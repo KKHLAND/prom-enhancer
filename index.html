@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23059669' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9.937 15.5L12 21l2.063-5.5L19.5 13.5 14.063 12 12 6.5 9.937 12 4.5 13.5l5.437 1.5zM21 3l-1.5 1.5M3 21l1.5-1.5' /%3E%3C/svg%3E" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%230891b2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9.937 15.5L12 21l2.063-5.5L19.5 13.5 14.063 12 12 6.5 9.937 12 4.5 13.5l5.437 1.5zM21 3l-1.5 1.5M3 21l1.5-1.5' /%3E%3C/svg%3E" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI 프롬프트 개선기</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,23 +13,23 @@
       body {
         font-family: 'Noto Sans KR', sans-serif;
       }
-      /* For a custom scrollbar */
+      /* Custom scrollbar to match the new theme */
       ::-webkit-scrollbar {
         width: 8px;
       }
       ::-webkit-scrollbar-track {
-        background: #d1fae5; /* bg-emerald-100 */
+        background: #e0f2fe; /* bg-sky-100 */
       }
       ::-webkit-scrollbar-thumb {
-        background: #6ee7b7; /* bg-emerald-300 */
+        background: #7dd3fc; /* bg-sky-300 */
         border-radius: 4px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #34d399; /* bg-emerald-400 */
+        background: #38bdf8; /* bg-sky-400 */
       }
     </style>
 </head>
-<body class="bg-emerald-50 text-slate-900 antialiased">
+<body class="bg-slate-50 text-slate-900 antialiased">
     <div id="root"></div>
 
     <script type="importmap">
@@ -48,12 +48,14 @@
         import { GoogleGenAI, Type } from "@google/genai";
 
         // --- GEMINI API SETUP ---
-        // 중요: 아래 'YOUR_GEMINI_API_KEY'를 실제 Gemini API 키로 바꾸세요.
-        const API_KEY = 'AIzaSyCxxYfU2PeJ6OHqs-N0CNKrB9R3sN_5wqs';
+        // 사용자가 제공한 API 키와 모델을 적용했습니다.
+        const API_KEY = "AIzaSyCxxYfU2PeJ6OHqs-N0CNKrB9R3sN_5wqs";
+        const MODEL_NAME = "gemini-2.5-flash";
         // -------------------------
 
-        if (API_KEY === 'YOUR_GEMINI_API_KEY') {
-            console.warn("Gemini API 키가 설정되지 않았습니다. `const API_KEY` 변수를 수정해주세요.");
+        if (!API_KEY) {
+            console.error("Gemini API 키가 설정되지 않았습니다.");
+            alert("오류: Gemini API 키가 설정되지 않았습니다. 코드를 확인해주세요.");
         }
         
         const ai = new GoogleGenAI({ apiKey: API_KEY });
@@ -109,7 +111,7 @@
         };
 
         const enhancePrompt = async (originalPrompt) => {
-          if (!API_KEY || API_KEY === 'YOUR_GEMINI_API_KEY') {
+          if (!API_KEY) {
             throw new Error("Gemini API 키가 설정되지 않았습니다. HTML 파일 상단의 'API_KEY' 변수를 수정해주세요.");
           }
           try {
@@ -132,7 +134,7 @@
             const userPrompt = `개선할 프롬프트는 다음과 같습니다: "${originalPrompt}"`;
 
             const response = await ai.models.generateContent({
-                model: "gemini-2.5-flash",
+                model: MODEL_NAME,
                 contents: userPrompt,
                 config: {
                     systemInstruction,
@@ -193,14 +195,14 @@
               value: prompt,
               onChange: (e) => setPrompt(e.target.value),
               placeholder: "예: 고등학생 학습 플래너 작성",
-              className: "flex-grow w-full bg-emerald-50/50 border border-emerald-300 rounded-lg p-4 text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 resize-none min-h-[250px] sm:min-h-[300px] text-base",
+              className: "flex-grow w-full bg-slate-100/80 border border-slate-300 rounded-lg p-4 text-slate-800 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all duration-200 resize-none min-h-[250px] sm:min-h-[300px] text-base",
               rows: 10,
               disabled: isLoading
             }),
             React.createElement('button', {
               onClick: onSubmit,
               disabled: isLoading || !prompt.trim(),
-              className: "mt-5 w-full inline-flex items-center justify-center px-6 py-3.5 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:bg-emerald-400/80 disabled:cursor-not-allowed transition-all duration-300"
+              className: "mt-5 w-full inline-flex items-center justify-center px-6 py-3.5 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 disabled:bg-cyan-400/80 disabled:cursor-not-allowed transition-all duration-300"
             }, isLoading ? 
               React.createElement(React.Fragment, null, 
                 React.createElement('svg', { className: "animate-spin -ml-1 mr-3 h-5 w-5 text-white", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24" },
@@ -220,7 +222,7 @@
         const PromptSection = ({ title, content }) => {
             if (!content || content.toLowerCase() === '해당 없음' || content.toLowerCase() === 'n/a') return null;
             return React.createElement('div', null,
-                React.createElement('h4', { className: "font-semibold text-emerald-700 text-sm tracking-wider uppercase" }, title),
+                React.createElement('h4', { className: "font-semibold text-cyan-800 text-sm tracking-wider uppercase" }, title),
                 React.createElement('p', { className: "text-slate-700 mt-1 whitespace-pre-wrap font-mono text-sm leading-relaxed" }, content)
             );
         };
@@ -251,16 +253,16 @@
             setTimeout(() => setIsCopied(false), 2000);
           };
 
-          return React.createElement('div', { className: "bg-white border border-emerald-200 rounded-xl p-5 transition-all duration-300 hover:border-emerald-400/50 hover:shadow-lg hover:shadow-emerald-500/10" },
+          return React.createElement('div', { className: "bg-white border border-slate-200 rounded-xl p-5 transition-all duration-300 hover:border-cyan-300/50 hover:shadow-lg hover:shadow-cyan-500/10" },
             React.createElement('div', { className: "flex justify-between items-start mb-4" },
-              React.createElement('h3', { className: "text-lg font-bold text-emerald-600" }, suggestion.title),
+              React.createElement('h3', { className: "text-lg font-bold text-cyan-700" }, suggestion.title),
               React.createElement('button', {
                 onClick: handleCopy,
-                className: `p-1.5 rounded-md transition-colors duration-200 ${isCopied ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800'}`,
+                className: `p-1.5 rounded-md transition-colors duration-200 ${isCopied ? 'bg-cyan-100 text-cyan-600' : 'bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800'}`,
                 'aria-label': "프롬프트 복사"
               }, isCopied ? React.createElement(CheckIcon, { className: "w-5 h-5" }) : React.createElement(ClipboardIcon, { className: "w-5 h-5" }))
             ),
-            React.createElement('div', { className: "space-y-4 bg-emerald-50/80 p-4 rounded-lg mb-4 border border-emerald-200/80" },
+            React.createElement('div', { className: "space-y-4 bg-cyan-50/50 p-4 rounded-lg mb-4 border border-cyan-200/60" },
               React.createElement(PromptSection, { title: "미션", content: suggestion.mission }),
               React.createElement(PromptSection, { title: "페르소나", content: suggestion.persona }),
               React.createElement(PromptSection, { title: "청중", content: suggestion.audience }),
@@ -279,11 +281,11 @@
         
         const LoadingSkeleton = () => {
             return React.createElement('div', { className: "space-y-6" },
-                [...Array(3)].map((_, i) => React.createElement('div', { key: i, className: "bg-white rounded-xl p-5 border border-emerald-200 animate-pulse" },
-                    React.createElement('div', { className: "h-6 bg-emerald-200 rounded w-1/3 mb-4" }),
-                    React.createElement('div', { className: "h-4 bg-emerald-200 rounded w-full mb-2" }),
-                    React.createElement('div', { className: "h-4 bg-emerald-200 rounded w-5/6 mb-4" }),
-                    React.createElement('div', { className: "h-4 bg-emerald-200 rounded w-1/2" })
+                [...Array(3)].map((_, i) => React.createElement('div', { key: i, className: "bg-white rounded-xl p-5 border border-slate-200 animate-pulse" },
+                    React.createElement('div', { className: "h-6 bg-slate-200 rounded w-1/3 mb-4" }),
+                    React.createElement('div', { className: "h-4 bg-slate-200 rounded w-full mb-2" }),
+                    React.createElement('div', { className: "h-4 bg-slate-200 rounded w-5/6 mb-4" }),
+                    React.createElement('div', { className: "h-4 bg-slate-200 rounded w-1/2" })
                 ))
             );
         };
@@ -295,19 +297,19 @@
 
           return React.createElement('div', { className: "h-full flex flex-col" },
             React.createElement('h2', { className: "text-xl font-semibold text-slate-700 mb-4" }, "AI 개선 제안"),
-            React.createElement('div', { className: "flex-grow overflow-y-auto pr-2 -mr-2" },
+            React.createElement('div', { className: "flex-grow overflow-y-auto pr-2 -mr-2 bg-slate-100/50 p-4 rounded-lg" },
               isLoading && React.createElement(LoadingSkeleton),
               error && React.createElement('div', { className: "flex flex-col items-center justify-center h-full text-center text-red-600 bg-red-50 p-6 rounded-lg" },
                 React.createElement('p', { className: "font-semibold text-lg" }, "오류가 발생했습니다"),
                 React.createElement('p', { className: "mt-1" }, error)
               ),
-              showInitialPlaceholder && React.createElement('div', { className: "flex flex-col items-center justify-center h-full text-center text-slate-500 bg-emerald-50/70 rounded-lg p-6" },
-                React.createElement(SparklesIcon, { className: "w-12 h-12 mb-4 text-emerald-400" }),
+              showInitialPlaceholder && React.createElement('div', { className: "flex flex-col items-center justify-center h-full text-center text-slate-500 bg-white rounded-lg p-6" },
+                React.createElement(SparklesIcon, { className: "w-12 h-12 mb-4 text-cyan-400" }),
                 React.createElement('p', { className: "font-semibold text-slate-600" }, "개선된 프롬프트가 여기에 표시됩니다."),
                 React.createElement('p', { className: "text-sm mt-1" }, "프롬프트를 입력하고 \"프롬프트 개선\"을 클릭하여 시작하세요.")
               ),
-              showNoResultsMessage && React.createElement('div', { className: "flex flex-col items-center justify-center h-full text-center text-slate-500 bg-emerald-50/70 rounded-lg p-6" },
-                 React.createElement(QuestionMarkCircleIcon, { className: "w-12 h-12 mb-4 text-emerald-400" }),
+              showNoResultsMessage && React.createElement('div', { className: "flex flex-col items-center justify-center h-full text-center text-slate-500 bg-white rounded-lg p-6" },
+                 React.createElement(QuestionMarkCircleIcon, { className: "w-12 h-12 mb-4 text-cyan-400" }),
                  React.createElement('p', { className: "font-semibold text-slate-600" }, "제안을 생성할 수 없습니다."),
                  React.createElement('p', { className: "text-sm mt-1" }, "프롬프트를 수정하거나 다른 아이디어로 다시 시도해 보세요.")
               ),
@@ -346,21 +348,21 @@
             }
           }, [initialPrompt]);
 
-          return React.createElement('div', { className: "min-h-screen bg-emerald-50 flex items-center justify-center p-4 sm:p-6 lg:p-8 font-sans" },
-            React.createElement('div', { className: "w-full max-w-7xl bg-white rounded-3xl shadow-2xl shadow-emerald-200/50 border border-emerald-200/70 overflow-hidden flex flex-col" },
-              React.createElement('header', { className: "p-6 sm:p-8 border-b border-emerald-200" },
+          return React.createElement('div', { className: "min-h-screen bg-slate-100 flex items-center justify-center p-4 sm:p-6 lg:p-8 font-sans" },
+            React.createElement('div', { className: "w-full max-w-7xl bg-white rounded-3xl shadow-2xl shadow-slate-300/50 border border-slate-200/70 overflow-hidden flex flex-col" },
+              React.createElement('header', { className: "p-6 sm:p-8 border-b border-slate-200 bg-gradient-to-r from-[#3c78d8] to-[#5a95f8] text-white" },
                 React.createElement('div', { className: "flex items-center gap-4" },
-                  React.createElement('div', { className: "inline-flex items-center justify-center bg-emerald-100 text-emerald-600 p-3 rounded-xl flex-shrink-0" },
-                    React.createElement(SparklesIcon, { className: "w-7 h-7 sm:w-8 sm:h-8" })
+                  React.createElement('div', { className: "inline-flex items-center justify-center bg-white/20 p-3 rounded-xl flex-shrink-0" },
+                    React.createElement(SparklesIcon, { className: "w-7 h-7 sm:w-8 sm:h-8 text-white" })
                   ),
                   React.createElement('div', null,
-                    React.createElement('h1', { className: "text-2xl sm:text-3xl font-bold tracking-tight text-slate-800" }, "AI 프롬프트 개선기"),
-                    React.createElement('p', { className: "mt-1 text-slate-500 max-w-2xl text-sm sm:text-base" }, "단순한 아이디어를 모든 AI 모델을 위한 강력하고 상세한 프롬프트로 변환하세요.")
+                    React.createElement('h1', { className: "text-2xl sm:text-3xl font-bold tracking-tight text-white" }, "AI 프롬프트 개선기"),
+                    React.createElement('p', { className: "mt-1 text-sky-100 max-w-2xl text-sm sm:text-base" }, "단순한 아이디어를 모든 AI 모델을 위한 강력하고 상세한 프롬프트로 변환하세요.")
                   )
                 )
               ),
               React.createElement('main', { className: "grid grid-cols-1 lg:grid-cols-2 flex-grow min-h-[600px] lg:min-h-[650px]" },
-                React.createElement('div', { className: "p-6 sm:p-8 lg:border-r lg:border-emerald-200" },
+                React.createElement('div', { className: "p-6 sm:p-8 lg:border-r lg:border-slate-200" },
                   React.createElement(PromptInput, {
                     prompt: initialPrompt,
                     setPrompt: setInitialPrompt,
@@ -368,7 +370,7 @@
                     isLoading: isLoading
                   })
                 ),
-                React.createElement('div', { className: "p-6 sm:p-8 border-t border-emerald-200 lg:border-t-0" },
+                React.createElement('div', { className: "p-6 sm:p-8 border-t border-slate-200 lg:border-t-0" },
                   React.createElement(SuggestionsDisplay, {
                     suggestions: enhancedPrompts,
                     isLoading: isLoading,
@@ -378,7 +380,7 @@
                   })
                 )
               ),
-              React.createElement('footer', { className: "text-center py-4 px-6 text-slate-400 text-xs border-t border-emerald-200 bg-emerald-50/50" },
+              React.createElement('footer', { className: "text-center py-4 px-6 text-slate-400 text-xs border-t border-slate-200 bg-slate-50" },
                 React.createElement('p', null, "© 2025 KH KIM. All Rights Reserved.")
               )
             )
